@@ -18,11 +18,11 @@ export class SocketService {
     return new Observable(observer => {
       this.socket = io();
       this.socket.on("full-text", data => {
-        console.log(data);
+        // console.log(data);
         observer.next({message: "full-text", data: data});
       });
       this.socket.on("delta-update", data => {
-        console.log(data);
+        // console.log(data);
         observer.next({message: "delta-update", data: data});
       });
       return () => {

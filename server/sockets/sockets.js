@@ -11,7 +11,7 @@ module.exports = function(server) {
         socket.on("delta-submit", function(data) {
             let diff = DMP.diff_main(text["test"], data.content);
             let patch = DMP.patch_make(diff);
-            console.log(patch);
+            // console.log(patch);
             text["test"] = data.content;
             socket.broadcast.emit("delta-update", {patch: patch});
             // Edit.updateOne({_id: data._id}, {content: text});

@@ -1,2 +1,5 @@
 <textarea #editor [(ngModel)]="edit_content" (input)="sendText()"></textarea>
-<p><button class="btn btn-primary" (click)="copyToClipboard()">Copy to clipboard</button></p>
+<p>
+    <button class="btn btn-primary" (click)="copyToClipboard()">Copy to clipboard</button>
+    <button class="btn btn-success" (click)="saveFile()">Download .txt</button>
+</p>

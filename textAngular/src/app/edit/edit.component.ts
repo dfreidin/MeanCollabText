@@ -1,5 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { SocketService } from '../socket.service';
+import { saveAs } from 'file-saver';
 declare var diff_match_patch: any;
 
 @Component({
@@ -46,6 +47,10 @@ export class EditComponent implements OnInit, AfterViewInit {
     this.textElement.select();
     document.execCommand("copy");
     setTimeout(()=>this.textElement.setSelectionRange(selected[0], selected[1]), 0);
+  }
+  saveFile() {
+    var blob = new Blob([this.edit_content.replace(/\n/g, "\r\n")], {type: "text/plain;charset=utf-8"});
+    saveAs(blob);
   }
 
 }

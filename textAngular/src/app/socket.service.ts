@@ -14,6 +14,10 @@ export class SocketService {
     this.socket.emit("delta-submit", data);
   }
 
+  joinSession(id: string) {
+    this.socket.emit("connect-file", id);
+  }
+
   getMessages() {
     return new Observable(observer => {
       this.socket = io();

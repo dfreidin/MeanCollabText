@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 })
 export class IndexComponent implements OnInit {
   db_id: string;
+  rejoin_id: string;
 
   constructor(
     private _httpService: HttpService,
@@ -16,6 +17,14 @@ export class IndexComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this._httpService.rejoin().subscribe(data => {
+      if(data["message"] == "Success") {
+        this.rejoin_id = data["data"]["_id"];
+      }
+      else {
+        this.rejoin_id = null;
+      }
+    });
   }
 
   newDocument() {

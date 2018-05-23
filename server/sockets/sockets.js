@@ -42,6 +42,7 @@ module.exports = function(server, session) {
         socket.on("connect-file", function(id) {
             socket.join(id);
             socket.handshake.session.db_id = id;
+            socket.handshake.session.save();
             if(!text[id]) {
                 loadFromDB(id, function() {
                     socket.emit("full-text", text[id]);

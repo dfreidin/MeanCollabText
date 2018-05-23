@@ -11,4 +11,8 @@ export class HttpService {
   newDocument() {
     return this._http.post("/api/new", {});
   }
+
+  rejoin() {
+    return this._http.get("/api/rejoin");
+  }
 }

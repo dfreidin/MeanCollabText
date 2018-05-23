@@ -44,6 +44,11 @@ export class EditComponent implements OnInit, AfterViewInit {
           this.reference = this.edit_content;
           setTimeout(()=>this.textElement.setSelectionRange(selected[0], selected[1]), 0);  // put the cursor back
         }
+        else if(data["message"] == "problem") {
+          if(data["data"]["code"] == 404) {
+            this._router.navigate(["/"]);
+          }
+        }
       });
       this._socketService.joinSession(this.db_id);
     });

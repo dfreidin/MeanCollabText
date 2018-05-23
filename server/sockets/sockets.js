@@ -22,9 +22,12 @@ function loop() {
     }
     Edit.deleteMany({updatedAt: {$lt: new Date(new Date().getTime() - (1000*60*60*24))}});
 }
-function loadFromDB(id, callback) {
+function loadFromDB(id, callback, socket) {
     Edit.findById(id, function(err, data) {
-        if(data) {
+        if(err) {
+            socket.emit("problem", {code: 404, message: `Unable to join session ${id}`});
+        }
+        else {
             text[data["_id"]] = data["content"];
             callback();
         }
@@ -45,7 +48,7 @@ module.exports = function(server, session) {
             if(!text[id]) {
                 loadFromDB(id, function() {
                     socket.emit("full-text", text[id]);
-                });
+                }, socket);
             }
             else {
                 socket.emit("full-text", text[id]);
@@ -55,7 +58,7 @@ module.exports = function(server, session) {
             if(!text[data.id]) {
                 loadFromDB(data.id, function() {
                     processDelta(socket, data);
-                })
+                }, socket);
             }
             else {
                 processDelta(socket, data);

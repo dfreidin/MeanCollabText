@@ -13,6 +13,7 @@ export class EditComponent implements OnInit, AfterViewInit {
   edit_content: string;
   DMP: any;
   @ViewChild("editor") ta: ElementRef;
+  @ViewChild("idstr") idstr: ElementRef;
   textElement: any;
   db_id: string;
 
@@ -51,7 +52,11 @@ export class EditComponent implements OnInit, AfterViewInit {
   sendText() {
     this._socketService.sendDelta({id: this.db_id, content: this.edit_content});
   }
-
+  copyID() {
+    this.idstr.nativeElement.select();
+    document.execCommand("copy");
+    setTimeout(()=>this.idstr.nativeElement.selectionEnd=this.idstr.nativeElement.selectionStart, 1);
+  }
   copyToClipboard() {
     let selected = [this.textElement.selectionStart, this.textElement.selectionEnd];
     this.textElement.select();

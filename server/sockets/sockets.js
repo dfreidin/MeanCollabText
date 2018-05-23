@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const diff_match_patch = require("diff-match-patch");
+const sharedSession = require("express-socket.io-session")
 const DMP = new diff_match_patch();
 const Edit = mongoose.model("Edit");
 let text = {};
@@ -34,11 +35,13 @@ function processDelta(socket, data) {
     text[data.id] = data.content;
     socket.to(data.id).emit("delta-update", {patch: patch});
 }
-module.exports = function(server) {
+module.exports = function(server, session) {
     const io = require("socket.io")(server);
+    io.use(sharedSession(session, {autosave: true}));
     io.on("connection", function(socket) {
         socket.on("connect-file", function(id) {
             socket.join(id);
+            socket.handshake.session.db_id = id;
             if(!text[id]) {
                 loadFromDB(id, function() {
                     socket.emit("full-text", text[id]);

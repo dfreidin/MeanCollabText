@@ -31,10 +31,8 @@ function loadFromDB(id, callback) {
     });
 }
 function processDelta(socket, data) {
-    let diff = DMP.diff_main(text[data.id], data.content);
-    let patch = DMP.patch_make(diff);
-    text[data.id] = data.content;
-    socket.to(data.id).emit("delta-update", {patch: patch});
+    text[data.id] = DMP.patch_apply(data.patch, text[data.id])[0];
+    socket.to(data.id).emit("delta-update", {patch: data.patch});
 }
 module.exports = function(server, session) {
     const io = require("socket.io")(server);

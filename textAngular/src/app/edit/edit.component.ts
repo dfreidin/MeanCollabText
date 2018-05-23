@@ -11,6 +11,7 @@ declare var diff_match_patch: any;
 })
 export class EditComponent implements OnInit, AfterViewInit {
   edit_content: string;
+  reference: string;
   DMP: any;
   @ViewChild("editor") ta: ElementRef;
   @ViewChild("idstr") idstr: ElementRef;
@@ -29,7 +30,8 @@ export class EditComponent implements OnInit, AfterViewInit {
       this.db_id = params.id;
       this._socketService.getMessages().subscribe(data => {
         if(data['message'] == "full-text") {
-          this.edit_content = data["data"];
+          this.reference = data["data"];
+          this.edit_content = this.reference;
         }
         else if(data["message"] == "delta-update") {
           let patch = data["data"]["patch"];
@@ -39,6 +41,7 @@ export class EditComponent implements OnInit, AfterViewInit {
           selected[0] = start < selected[0] ? selected[0] + diff_length : selected[0];  // attempt to compensate cursor position for the patch
           selected[1] = start < selected[1] ? selected[1] + diff_length : selected[1];
           this.edit_content = this.DMP.patch_apply(patch, this.edit_content)[0];  // apply the patch
+          this.reference = this.edit_content;
           setTimeout(()=>this.textElement.setSelectionRange(selected[0], selected[1]), 0);  // put the cursor back
         }
       });
@@ -50,7 +53,10 @@ export class EditComponent implements OnInit, AfterViewInit {
   }
 
   sendText() {
-    this._socketService.sendDelta({id: this.db_id, content: this.edit_content});
+    let diff = this.DMP.diff_main(this.reference, this.edit_content);
+    this.reference = this.edit_content;
+    let patch = this.DMP.patch_make(diff);
+    this._socketService.sendDelta({id: this.db_id, patch: patch});
   }
   copyID() {
     this.idstr.nativeElement.select();

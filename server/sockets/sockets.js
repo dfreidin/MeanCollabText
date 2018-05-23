@@ -20,6 +20,7 @@ function loop() {
             }
         });
     }
+    Edit.deleteMany({updatedAt: {$lt: new Date(new Date().getTime() - (1000*60*60*24))}});
 }
 function loadFromDB(id, callback) {
     Edit.findById(id, function(err, data) {

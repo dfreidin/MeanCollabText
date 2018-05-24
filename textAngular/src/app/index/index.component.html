@@ -1,8 +1,9 @@
 <div id="options">
   <p><button class="btn btn-success" (click)="newDocument()">New Session</button></p>
   <h4>OR</h4>
+  <p *ngIf="errors" class="error">Unable to join that session</p>
   <p><input type="text" name="db_id" [(ngModel)]="db_id" placeholder="Session ID"></p>
-  <p><button class="btn btn-primary" [routerLink]="['/edit', db_id]">Join Session</button></p>
+  <p><button class="btn btn-primary" (click)="checkAndGo()">Join Session</button></p>
   <div *ngIf="rejoin_id">
     <h4>OR</h4>
     <p><button class="btn btn-success" [routerLink]="['/edit', rejoin_id]">Rejoin Last Session</button></p>

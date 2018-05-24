@@ -15,4 +15,8 @@ export class HttpService {
   rejoin() {
     return this._http.get("/api/rejoin");
   }
+
+  check(id: string) {
+    return this._http.get(`/api/check/${id}`);
+  }
 }

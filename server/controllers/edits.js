@@ -30,5 +30,8 @@ module.exports = {
                 error: "No recent session"
             });
         }
+    },
+    check: function(req, res) {
+        Edit.findById(req.params.id, buildQueryHandler(res));
     }
 }

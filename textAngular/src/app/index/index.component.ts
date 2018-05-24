@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 export class IndexComponent implements OnInit {
   db_id: string;
   rejoin_id: string;
+  errors = null;
 
   constructor(
     private _httpService: HttpService,
@@ -33,7 +34,18 @@ export class IndexComponent implements OnInit {
         this._router.navigate([`/edit/${data['data']._id}`]);
       }
       else {
-        console.log(data);
+        this.errors = data["error"];
+      }
+    });
+  }
+
+  checkAndGo() {
+    this._httpService.check(this.db_id).subscribe(data => {
+      if(data["message"] == "Success") {
+        this._router.navigate([`/edit/${data['data']._id}`]);
+      }
+      else {
+        this.errors = data["error"];
       }
     });
   }

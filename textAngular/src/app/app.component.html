@@ -1,1 +1,10 @@
-<router-outlet></router-outlet>
+<div [class]="theme">
+    <div class="container">
+        <p>Theme: 
+            <button class="btn btn-light" (click)="setLight()">Light</button>
+            <button class="btn btn-dark" (click)="setDark()">Dark</button>
+            <button class="btn btn-primary" (click)="setBlue()">Blue</button>
+        </p>
+        <router-outlet></router-outlet>
+    </div>
+</div>

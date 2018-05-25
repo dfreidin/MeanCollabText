@@ -6,5 +6,17 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app';
+  theme = "light";
+  
+  setDark() {
+    this.theme = "dark";
+  }
+
+  setBlue() {
+    this.theme = "blue";
+  }
+
+  setLight() {
+    this.theme = "light";
+  }
 }
